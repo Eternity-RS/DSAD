@@ -1,0 +1,34 @@
+Analysis:
+
+Files:
+HospitalConsultation.java : main program that calls loadFile and Menu
+Menu.java : class that has the menu operations
+PatientNode.java : class that defines each patient node of linked-list
+PatientRecord.java : class that defines does the linked list operations.
+ConsultQueue.java : class that maintains the max heap. 
+
+Running time Analysis:
+Insert: 
+This has two parts:
+* Inserting in to doubly linked list: 
+  - time complexity for this is O(1), since we maintain a tail pointer, and always insert at the end.
+* Enqueueing in to the consultQueue:
+  - time complexity of this is O(lg(n)). Here, we try to insert in to last element, check if parent of last element is > this element, if not, swap, and check again, until we reach root.
+  - best case : 1 (current element smaller than its parent, ie current patient is younger than atleast half of the existing patients.)
+  - worst case : lg n (current patient is oldest)
+
+Display next patient:
+This has two parts:
+* displaying the next patient: 
+  - time complexity for this is 1, as we just have to print the front element always.
+* remove patient from consultQueue:
+ - time complexity for this is O(lg(n)). Here, after removing the first element, we have to rebuild the heap.
+
+Display all patients:
+This too has two parts:
+* dequeueing all elements.
+  - time coplexity for this is n*lg(n) (call heapify n times)
+* enqueueing all elements.
+  - time complexity for this is n*lg(n) (call heapify n times)
+
+Insert and Dequeue can be done in O(lg(n)) time, whereas displayQueue will be done in O(n*lg(n)) time.
