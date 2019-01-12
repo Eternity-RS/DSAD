@@ -65,7 +65,6 @@ public class PatientRecord {
 
 	public int registerPatient(String name, int age) {
 		PatientNode p_node = new PatientNode(name, age);
-		patientqueue.enqueuePatient(p_node.getAge());
 		if (isEmpty()) {
 			head = p_node;
 		} else {
@@ -74,24 +73,26 @@ public class PatientRecord {
 		p_node.previous = tail;
 		tail = p_node;
 		length++;
+		patientqueue.enqueuePatient(p_node.getId());
 		return p_node.getId();
 	}
-	// Display the DoublyLL
-	/*
-	 * public void patientRecordList(){ if (head==null){ return; } PatientNode
-	 * temp =head; while(temp!=null){
-	 * System.out.println("List::  "+temp.id+"  "+temp.name+"  "+temp.age);
-	 * temp=temp.next; } System.out.println("-------------------------"); }
-	 */
-
-	// Get the node in the DLL given the patient_age
-	public PatientNode getPatient(PatientNode head, int patient_age) {
-		if (head == null) {
-			return NOT_FOUND;
-		}
-		if (head.age == patient_age)
-			return head;
-		return getPatient(head.next, patient_age);
+	
+	// Display the DoublyLL	
+	/*public void patientRecordList(){ if (head==null){ return; } 
+	PatientNode temp =head; while(temp!=null){
+	 System.out.println("List::  "+temp.id+"  "+temp.name+"  "+temp.age);
+	 temp=temp.next; } System.out.println("-------------------------"); }*/
+	 
+	
+	
+	// Get the node in the DLL given the patient_id	
+		public static PatientNode getPatientById(PatientNode head, int patient_id) {
+			if (head == null) {
+				return NOT_FOUND;
+			}
+			if (head.id == patient_id)
+				return head;
+			return getPatientById(head.next, patient_id);
 	}
 
 }

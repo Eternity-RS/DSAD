@@ -1,10 +1,8 @@
 package com.dse.hospital.consultation;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import com.dse.hospital.patient.PatientRecord;
 
@@ -44,7 +42,7 @@ public class ConsultQueue {
 	}
 
 	private boolean isLeaf(int pos) {
-		if (pos >= (count / 2) && pos <= count) {
+		if (pos > (count / 2) && pos <= count) {
 			return true;
 		}
 		return false;
@@ -58,10 +56,14 @@ public class ConsultQueue {
 	}
 
 	private void maxHeapify(int pos) {
+		PatientRecord dll = PatientRecord.getInstance();
 		if (!isLeaf(pos)) {
-			if (patient_queue[pos] < patient_queue[leftChild(pos)]
-					|| patient_queue[pos] < patient_queue[rightChild(pos)]) {
-				if (patient_queue[leftChild(pos)] > patient_queue[rightChild(pos)]) {
+			if (PatientRecord.getPatientById(dll.head, patient_queue[pos]).getAge() < PatientRecord
+					.getPatientById(dll.head, patient_queue[leftChild(pos)]).getAge()
+					|| PatientRecord.getPatientById(dll.head, patient_queue[pos]).getAge() < PatientRecord
+							.getPatientById(dll.head, patient_queue[rightChild(pos)]).getAge()) {
+				if (PatientRecord.getPatientById(dll.head, patient_queue[leftChild(pos)]).getAge() > PatientRecord
+						.getPatientById(dll.head, patient_queue[rightChild(pos)]).getAge()) {
 					swap(pos, leftChild(pos));
 					maxHeapify(leftChild(pos));
 				} else {
@@ -80,19 +82,23 @@ public class ConsultQueue {
 
 	/*
 	 * Printing Parent, Left and Right node of max heap
-	 * 
+	 */
+	/*
 	 * public void print(){ for (int i = 1; i <= count / 2; i++) {
 	 * System.out.print(" PARENT:  " + patient_queue[i] + " LEFT CHILD: " +
 	 * patient_queue[2 * i] + " RIGHT CHILD: " + patient_queue[2 * i + 1]); } }
 	 */
 
 	public void enqueuePatient(int patient_id) {
+		PatientRecord dll = PatientRecord.getInstance();
 		if (count == total_patient) {
 			System.out.println("Queue full");
 		} else {
 			patient_queue[++count] = patient_id;
 			int current = count;
-			while (patient_queue[current] > patient_queue[parent(current)]) {
+			while (PatientRecord.getPatientById(dll.head, patient_queue[current]).getAge() > PatientRecord
+					.getPatientById(dll.head, patient_queue[parent(current)]).getAge()
+					&& PatientRecord.getPatientById(dll.head, patient_queue[parent(current)]).getAge() != -1) {
 				swap(current, parent(current));
 				current = parent(current);
 			}
@@ -105,15 +111,15 @@ public class ConsultQueue {
 		} else {
 			patient_queue[FRONT] = patient_queue[count--];
 			maxHeapify(FRONT);
-			System.out.println("Patient Dequeued ... \n");
 		}
 	}
 
 	public void nextPatient(PatientRecord dll) {
 		if (count != 0)
-			System.out.println("Next patient is ID:" + dll.getPatient(dll.head, patient_queue[FRONT]).getId() + " Name:"
-					+ dll.getPatient(dll.head, patient_queue[FRONT]).getName() + " Age:"
-					+ dll.getPatient(dll.head, patient_queue[FRONT]).getAge() + "\n");
+			System.out.println(
+					"Next patient is ID:" + PatientRecord.getPatientById(dll.head, patient_queue[FRONT]).getId()
+							+ " Name:" + PatientRecord.getPatientById(dll.head, patient_queue[FRONT]).getName()
+							+ " Age:" + PatientRecord.getPatientById(dll.head, patient_queue[FRONT]).getAge() + "\n");
 		else {
 			System.out.println("\n No next Patient \n");
 		}
@@ -121,6 +127,8 @@ public class ConsultQueue {
 
 	public void displayQueue(PatientRecord dll) {
 		File file = new File("src/main/resource/Output.txt");
+		int[] display_list = new int[total_patient];
+		int size = count;
 		try {
 			PrintStream o = new PrintStream(file);
 			PrintStream console = System.out;
@@ -132,10 +140,16 @@ public class ConsultQueue {
 			} else {
 				System.out.println("\n Displaying the queue");
 				System.out.println("------------------------");
-				for (int i = 1; i <= count; i++) {
-					System.out.println("ID:" + dll.getPatient(dll.head, patient_queue[i]).getId() + " Name:"
-							+ dll.getPatient(dll.head, patient_queue[i]).getName() + " Age:"
-							+ dll.getPatient(dll.head, patient_queue[i]).getAge() + "\n");
+
+				while (count > 0) {
+					display_list[count] = PatientRecord.getPatientById(dll.head, patient_queue[FRONT]).getId();
+					ConsultQueue.getQueueInstance().dequeuePatient();
+				}
+				for (int i = size; i > 0; i--) {
+					System.out.println(size + 1 - i + " , " + display_list[i] + " , "
+							+ PatientRecord.getPatientById(dll.head, display_list[i]).getName() + " , "
+							+ PatientRecord.getPatientById(dll.head, display_list[i]).getAge());
+					enqueuePatient(display_list[i]);
 				}
 				System.setOut(console);
 			}
