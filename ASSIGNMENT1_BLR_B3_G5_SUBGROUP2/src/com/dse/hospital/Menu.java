@@ -16,9 +16,8 @@ public class Menu {
 
 		System.out.println("\n\n*************** Menu ************");
 		System.out.println("1. Register Patient");
-		System.out.println("2. Display Next Patient");
-		System.out.println("3. Dequeue Patient");
-		System.out.println("4. Display Queue");
+		System.out.println("2. Display and dequeue Next Patient");
+		System.out.println("3. Display Queue");
 		System.out.println("0. Exit the application");
 		System.out.println("*********************************\n");
 
@@ -34,10 +33,10 @@ public class Menu {
 			} catch (NumberFormatException e) {
 				System.out.println("Invalid selection. Numbers only please.");
 			}
-			if (choice < 0 || choice > 4) {
+			if (choice < 0 || choice > 3) {
 				System.out.println("Choice outside of range. Please chose again.");
 			}
-		} while (choice < 0 || choice > 4);
+		} while (choice < 0 || choice > 3);
 		return choice;
 	}
 
@@ -59,18 +58,17 @@ public class Menu {
 				int age = input.nextInt();
 				id = dll.registerPatient(name, age);
 				System.out.println(" Patient :" + name + " is registered successfully with id : " + id);
+				patientqueue.nextPatient();
 			} catch (Exception ex) {
 				System.out.println("Patient entry was not created.");
 			}
+			break;
 		}
-			break;
 		case 2:
-			patientqueue.nextPatient(dll);
-			break;
-		case 3:
+			patientqueue.nextPatient();
 			patientqueue.dequeuePatient();
 			break;
-		case 4:
+		case 3:
 			patientqueue.displayQueue(dll);
 			break;
 		default:

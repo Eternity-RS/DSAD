@@ -1,9 +1,3 @@
 
- Displaying the queue
-------------------------
-1 , 6 , Ram , 70
-2 , 4 , Mary , 64
-3 , 2 , Surya , 60
-4 , 5 , Radha , 56
-5 , 3 , Ajit , 55
-6 , 1 , Pradeep , 45
+No Patient in the queue 
+

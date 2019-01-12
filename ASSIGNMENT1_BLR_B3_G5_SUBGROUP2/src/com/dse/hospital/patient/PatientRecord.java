@@ -35,18 +35,16 @@ public class PatientRecord {
 		return length == 0;
 	}
 
-	public int length() {
-		return length;
-	}
-
-	public void loadFile(boolean firsttime) {
+	public void loadFile() {
 
 		String initial_content = new String();
 		String name;
 		int age;
 		int id;
-		File file = new File("src/main/resource/Input.txt");
+		String input_file = "src/main/resource/Input.txt";
+		File file = new File(input_file);
 		try {
+			System.out.println("Reading from " + input_file);
 			Scanner sc = new Scanner(new FileInputStream(file));
 			System.out.println("Initial Content from the Input file ");
 			while (sc.hasNextLine()) {
@@ -63,6 +61,11 @@ public class PatientRecord {
 
 	}
 
+	/**
+	 * Register Patient:
+	 * Add to doubly linked list.
+	 * enqueue node to ConsultQueue.
+	 */
 	public int registerPatient(String name, int age) {
 		PatientNode p_node = new PatientNode(name, age);
 		if (isEmpty()) {
@@ -73,26 +76,7 @@ public class PatientRecord {
 		p_node.previous = tail;
 		tail = p_node;
 		length++;
-		patientqueue.enqueuePatient(p_node.getId());
+		patientqueue.enqueuePatient(p_node);
 		return p_node.getId();
 	}
-	
-	// Display the DoublyLL	
-	/*public void patientRecordList(){ if (head==null){ return; } 
-	PatientNode temp =head; while(temp!=null){
-	 System.out.println("List::  "+temp.id+"  "+temp.name+"  "+temp.age);
-	 temp=temp.next; } System.out.println("-------------------------"); }*/
-	 
-	
-	
-	// Get the node in the DLL given the patient_id	
-		public static PatientNode getPatientById(PatientNode head, int patient_id) {
-			if (head == null) {
-				return NOT_FOUND;
-			}
-			if (head.id == patient_id)
-				return head;
-			return getPatientById(head.next, patient_id);
-	}
-
 }
