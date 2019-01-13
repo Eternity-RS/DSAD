@@ -56,7 +56,7 @@ public class PatientRecord {
 			}
 			sc.close();
 		} catch (FileNotFoundException fnf) {
-			fnf.printStackTrace();
+			System.out.println("Input file " + input_file + " not found");
 		}
 
 	}
